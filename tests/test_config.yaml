@@ -1,5 +1,5 @@
-# Configuration
-database_path: "data/hallucination.db"
+# Test Configuration
+database_path: "data/test_phase2_claims.db"
 gemini_model: "gemini-2.5-flash"
 input_data_path: "phase1_llm_outputs.csv"
 model:

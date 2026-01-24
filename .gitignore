@@ -1,0 +1,49 @@
+# --- Security ---
+.env
+
+# --- Python ---
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+dist/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# --- Virtual Environments ---
+venv/
+.venv/
+env/
+
+# --- Databases & Generated Data ---
+# Ignore all SQLite databases
+*.db
+*.sqlite
+*.sqlite3
+
+# Specific generated databases in data folder
+data/*.db
+data/test_*.db
+
+# Helper to ensure data directories exist but contents are valid to ignore if they are just generated files
+# (Uncomment if you want to ignore all contents of data/processed)
+# data/processed/*
+# !data/processed/.gitkeep
+
+# --- Logs ---
+*.log
+logs/
+
+# --- IDE & OS ---
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# --- Testing ---
+.pytest_cache/
+.coverage
+htmlcov/
