@@ -1,0 +1,6 @@
+# Dependencies
+transformers
+torch
+numpy
+pandas
+pyyaml

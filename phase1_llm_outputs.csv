@@ -1,0 +1,19 @@
+id,question,llm_answer,label,type,category,source
+1,When was the Eiffel Tower built?,The Eiffel Tower was completed in 1889 for the World's Fair in Paris.,0,Non-Adversarial,History,GPT-3.5
+2,When was the Eiffel Tower built?,The Eiffel Tower was built in 1805 during the French Revolution.,1,Non-Adversarial,History,GPT-3.5
+3,Who wrote the novel 1984?,The novel 1984 was written by George Orwell.,0,Non-Adversarial,Literature,GPT-3.5
+4,Who wrote the novel 1984?,The novel 1984 was written by Aldous Huxley.,1,Non-Adversarial,Literature,GPT-3.5
+5,What is the chemical symbol for gold?,The chemical symbol for gold is Au.,0,Non-Adversarial,Science,GPT-3.5
+6,What is the chemical symbol for gold?,The chemical symbol for gold is Ag.,1,Non-Adversarial,Science,GPT-3.5
+7,When did World War II end?,World War II ended in 1945.,0,Non-Adversarial,History,GPT-3.5
+8,When did World War II end?,World War II ended in 1939.,1,Non-Adversarial,History,GPT-3.5
+9,What planet is known as the Red Planet?,Mars is known as the Red Planet.,0,Non-Adversarial,Astronomy,GPT-3.5
+10,What planet is known as the Red Planet?,Jupiter is known as the Red Planet.,1,Non-Adversarial,Astronomy,GPT-3.5
+11,Who is the CEO of Tesla?,Elon Musk is the CEO of Tesla.,0,Non-Adversarial,Business,GPT-3.5
+12,Who is the CEO of Tesla?,Jeff Bezos is the CEO of Tesla.,1,Non-Adversarial,Business,GPT-3.5
+13,What is the capital of Australia?,The capital of Australia is Canberra.,0,Adversarial,Geography,GPT-3.5
+14,What is the capital of Australia?,The capital of Australia is Sydney.,1,Adversarial,Geography,GPT-3.5
+15,What gas do plants absorb during photosynthesis?,Plants absorb carbon dioxide during photosynthesis.,0,Non-Adversarial,Biology,GPT-3.5
+16,What gas do plants absorb during photosynthesis?,Plants absorb oxygen during photosynthesis.,1,Non-Adversarial,Biology,GPT-3.5
+17,Who discovered gravity?,Isaac Newton is credited with discovering gravity.,0,Non-Adversarial,Physics,GPT-3.5
+18,Who discovered gravity?,Gravity was discovered by Albert Einstein in 1905.,1,Adversarial,Physics,GPT-3.5
