@@ -1,6 +1,0 @@
-claim,status,score,evidence_count,entailments,contradictions,row_id,original_answer
-The Eiffel Tower was completed in 1889 for the World's Fair in Paris,No Evidence,0.0,0,0,0,1,The Eiffel Tower was completed in 1889 for the World's Fair in Paris.
-The Eiffel Tower was built in 1805 during the French Revolution,No Evidence,0.0,0,0,0,2,The Eiffel Tower was built in 1805 during the French Revolution.
-The novel 1984 was written by George Orwell,Not Enough Info,0.0,3,0,0,3,The novel 1984 was written by George Orwell.
-The novel 1984 was written by Aldous Huxley,No Evidence,0.0,0,0,0,4,The novel 1984 was written by Aldous Huxley.
-The chemical symbol for gold is Au,Supported,0.99,3,3,0,5,The chemical symbol for gold is Au.
