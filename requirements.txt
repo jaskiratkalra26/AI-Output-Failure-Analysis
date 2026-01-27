@@ -6,3 +6,5 @@ pandas
 pyyaml
 requests
 duckduckgo-search
+google-generativeai
+python-dotenv

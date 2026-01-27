@@ -1,0 +1,19 @@
+claim,status,score,evidence_count,entailments,contradictions,row_id,original_answer
+The Eiffel Tower was completed in 1889 for the World's Fair in Paris,Not Enough Info,0.0,3,0,0,1,The Eiffel Tower was completed in 1889 for the World's Fair in Paris.
+The Eiffel Tower was built in 1805 during the French Revolution,No Evidence,0.0,0,0,0,2,The Eiffel Tower was built in 1805 during the French Revolution.
+The novel 1984 was written by George Orwell,No Evidence,0.0,0,0,0,3,The novel 1984 was written by George Orwell.
+The novel 1984 was written by Aldous Huxley,Not Enough Info,0.0,3,0,0,4,The novel 1984 was written by Aldous Huxley.
+The chemical symbol for gold is Au,Supported,0.99,3,3,0,5,The chemical symbol for gold is Au.
+The chemical symbol for gold is Ag,Not Enough Info,0.0,3,0,0,6,The chemical symbol for gold is Ag.
+World War II ended in 1945,No Evidence,0.0,0,0,0,7,World War II ended in 1945.
+World War II ended in 1939,No Evidence,0.0,0,0,0,8,World War II ended in 1939.
+Mars is known as the Red Planet,No Evidence,0.0,0,0,0,9,Mars is known as the Red Planet.
+Jupiter is known as the Red Planet,No Evidence,0.0,0,0,0,10,Jupiter is known as the Red Planet.
+Elon Musk is the CEO of Tesla,Not Enough Info,0.0,3,0,0,11,Elon Musk is the CEO of Tesla.
+Jeff Bezos is the CEO of Tesla,No Evidence,0.0,0,0,0,12,Jeff Bezos is the CEO of Tesla.
+The capital of Australia is Canberra,Not Enough Info,0.0,3,0,0,13,The capital of Australia is Canberra.
+The capital of Australia is Sydney,No Evidence,0.0,0,0,0,14,The capital of Australia is Sydney.
+Plants absorb carbon dioxide during photosynthesis,No Evidence,0.0,0,0,0,15,Plants absorb carbon dioxide during photosynthesis.
+Plants absorb oxygen during photosynthesis,Not Enough Info,0.0,3,0,0,16,Plants absorb oxygen during photosynthesis.
+Isaac Newton is credited with discovering gravity,No Evidence,0.0,0,0,0,17,Isaac Newton is credited with discovering gravity.
+Gravity was discovered by Albert Einstein in 1905,Not Enough Info,0.0,3,0,0,18,Gravity was discovered by Albert Einstein in 1905.
