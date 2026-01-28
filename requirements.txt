@@ -8,3 +8,4 @@ requests
 duckduckgo-search
 google-generativeai
 python-dotenv
+wikipedia

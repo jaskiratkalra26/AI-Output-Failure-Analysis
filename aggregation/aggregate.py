@@ -1,4 +1,11 @@
 from typing import List, Dict, Any
+import logging
+from config.config import CONFIG
+
+logger = logging.getLogger(__name__)
+
+# Load config
+verification_config = CONFIG.get("verification", {})
 
 def aggregate_results(verified_claims: List[Dict[str, Any]]) -> Dict[str, Any]:
     """
@@ -23,6 +30,8 @@ def aggregate_results(verified_claims: List[Dict[str, Any]]) -> Dict[str, Any]:
     label_contradiction = "CONTRADICTION"
     label_entailment = "ENTAILMENT"
     label_neutral = "NEUTRAL"
+    
+    contra_threshold = verification_config.get("contradiction_threshold", 0.80)
 
     # Counters for overall decision
     total_claims = 0
@@ -66,11 +75,13 @@ def aggregate_results(verified_claims: List[Dict[str, Any]]) -> Dict[str, Any]:
                 })
 
             if label == label_contradiction:
-                found_contradiction = True
-                current_claim_contradiction_confs.append(conf)
-                # Update global max contradiction confidence
-                if conf > max_contradiction_conf:
-                    max_contradiction_conf = conf
+                # Only count CONTRADICTION if confidence >= threshold
+                if conf >= contra_threshold:
+                    found_contradiction = True
+                    current_claim_contradiction_confs.append(conf)
+                    # Update global max contradiction confidence
+                    if conf > max_contradiction_conf:
+                        max_contradiction_conf = conf
             elif label == label_entailment:
                 found_entailment = True
                 current_claim_entailment_confs.append(conf)

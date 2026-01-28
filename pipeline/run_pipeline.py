@@ -11,6 +11,7 @@ load_dotenv()
 # Add project root to path
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
+from config.config import CONFIG
 from claim_extraction.extractor import ClaimExtractor
 from evidence_retrieval.retriever import retrieve_evidence
 from verification.claim_verification import verify_claims
@@ -20,11 +21,15 @@ from aggregation.aggregate import aggregate_results
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
 
+# Load config
+paths_config = CONFIG.get("paths", {})
+extraction_config = CONFIG.get("extraction", {})
+
 def run():
     logger.info("Starting Hallucination Detection Pipeline...")
     
     # 1. Load Input Data
-    input_file = "phase1_llm_outputs.csv"
+    input_file = paths_config.get("input_data_path", "phase1_llm_outputs.csv")
     if not os.path.exists(input_file):
         logger.error(f"Input file {input_file} not found.")
         return
@@ -67,7 +72,8 @@ def run():
             # Naive fallback: split by periods if the answer is long, else take the whole thing
             # This is just for testing verification when extractor is down
             if isinstance(llm_answer, str):
-                claims = [s.strip() for s in llm_answer.split('.') if len(s.strip()) > 10]
+                min_len = extraction_config.get("naive_fallback_min_length", 10)
+                claims = [s.strip() for s in llm_answer.split('.') if len(s.strip()) > min_len]
                 if not claims: 
                     claims = [llm_answer]
             else:
@@ -96,7 +102,7 @@ def run():
 
     if all_results:
         final_df = pd.concat(all_results, ignore_index=True)
-        output_file = "final_pipeline_output.csv"
+        output_file = paths_config.get("pipeline_output_path", "final_pipeline_output.csv")
         final_df.to_csv(output_file, index=False)
         logger.info(f"Pipeline completed. Results saved to {output_file}")
         print(final_df.head())

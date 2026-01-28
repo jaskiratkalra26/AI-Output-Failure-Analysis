@@ -5,8 +5,9 @@ import logging
 logger = logging.getLogger(__name__)
 
 class NLIModel:
-    def __init__(self, model_name="roberta-large-mnli"):
+    def __init__(self, model_name="roberta-large-mnli", max_length=512):
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+        self.max_length = max_length
         logger.info(f"Loading NLI model: {model_name} on {self.device}...")
         try:
             self.tokenizer = AutoTokenizer.from_pretrained(model_name)
@@ -24,7 +25,7 @@ class NLIModel:
         """
         try:
             # Inputs: Premise (Evidence) first, Hypothesis (Claim) second is standard for NLI
-            inputs = self.tokenizer(premise, hypothesis, return_tensors="pt", truncation=True, max_length=512)
+            inputs = self.tokenizer(premise, hypothesis, return_tensors="pt", truncation=True, max_length=self.max_length)
             inputs = {k: v.to(self.device) for k, v in inputs.items()}
 
             with torch.no_grad():
