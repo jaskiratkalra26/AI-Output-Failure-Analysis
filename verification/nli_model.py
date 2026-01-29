@@ -8,11 +8,13 @@ class NLIModel:
     def __init__(self, model_name="roberta-large-mnli", max_length=512):
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         self.max_length = max_length
+        print(f"Loading NLI model: {model_name} on {self.device}... (This may take a few minutes for the first download)")
         logger.info(f"Loading NLI model: {model_name} on {self.device}...")
         try:
             self.tokenizer = AutoTokenizer.from_pretrained(model_name)
             self.model = AutoModelForSequenceClassification.from_pretrained(model_name).to(self.device)
             self.model.eval()
+            print("NLI model loaded successfully.")
             logger.info("NLI model loaded successfully.")
         except Exception as e:
             logger.error(f"Failed to load NLI model: {e}")

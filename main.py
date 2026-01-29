@@ -2,6 +2,7 @@ import logging
 import os
 from typing import List, Dict, Optional, Any
 from fastapi import FastAPI, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from dotenv import load_dotenv
 
@@ -26,6 +27,15 @@ app = FastAPI(
     title="Hallucination Detection System",
     description="Orchestrator for Hallucination Detection Phases",
     version="1.0.0"
+)
+
+# Add CORS Middleware to allow requests from any origin
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Allows all origins
+    allow_credentials=True,
+    allow_methods=["*"],  # Allows all methods
+    allow_headers=["*"],  # Allows all headers
 )
 
 # --- Data Models ---
