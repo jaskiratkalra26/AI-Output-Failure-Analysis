@@ -1,20 +1,31 @@
-# Environments
-.env
-venv/
+# Python
 __pycache__/
 *.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+.venv/
+pip-log.txt
+pip-delete-this-directory.txt
 
-# Data
-*.db
+# Environments
+.env
+
+# IDEs
+.vscode/
+.idea/
+
+# Data and Outputs
 *.csv
-!phase1_llm_outputs.csv
+!llm_outputs.csv
+# Keep specific example data if needed
+# !llm_outputs.csv
 
-# Logs & System
+# Logs
 *.log
-.DS_Store
 
-# Temporary Scripts
-/test_search.py
-/test_search_integrated.py
-/debug_search.py
-/cat_output.py
+# System
+.DS_Store
+Thumbs.db
