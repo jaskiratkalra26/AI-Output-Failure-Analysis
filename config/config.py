@@ -18,18 +18,18 @@ CONFIG = {
     "retrieval": {
         "wikipedia_language": "en",
         "max_search_results": 1,
-        "max_paragraphs": 5,
+        "max_paragraphs": 100,
         "min_sentence_length": 20,
-        "document_top_n_sentences": 2,
+        "document_top_n_sentences": 5,
         "fallback_threshold_score": 2,
         "entity_match_score": 1,
-        "keyword_match_score": 1,
+        "keyword_match_score": 2,
         "wikipedia_domain": "wikipedia.org",
         "serpapi_api_key_env": "SERPAPI_API_KEY",
         "stopwords": [
             "the", "was", "is", "in", "of", "and", "a", "to", "he", "she", "it", 
             "they", "for", "on", "with", "as", "at", "by", "an", "that", "this", 
-            "from", "which", "are", "were"
+            "from", "which", "are", "were", "during"
         ],
         "keyword_min_length": 3
     },

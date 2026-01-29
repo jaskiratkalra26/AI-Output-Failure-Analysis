@@ -27,20 +27,47 @@ except Exception as e:
 
 def extract_key_entity(claim: str) -> str:
     """
-    Extracts the key entity from the claim using a simple heuristic:
-    The first capitalized phrase.
+    Extracts the key entity from the claim using an improved heuristic:
+    Finds all capitalized phrases, filters out common starting stopwords, 
+    and picks the longest remaining candidate.
     """
     if not claim:
         return ""
         
-    # Find the first sequence of capitalized words
-    match = re.search(r'\b[A-Z][\w-]*(?:\s+[A-Z][\w-]*)*\b', claim)
+    # 1. Find all sequences of capitalized words
+    # matches e.g. "Isaac Newton", "The", "George Orwell"
+    matches = re.finditer(r'\b[A-Z][\w-]*(?:\s+[A-Z][\w-]*)*\b', claim)
+    candidates = [m.group(0) for m in matches]
     
-    if match:
-        entity = match.group(0)
-        return entity
+    if not candidates:
+        return claim  # Fallback: use whole claim
+        
+    # 2. Define stopwords to filter (if they appear as the *entire* candidate)
+    # We load from config and also add common question starters
+    config_stopwords = retrieval_config.get("stopwords", [])
+    # Capitalize them for comparison
+    stopwords = set(s.capitalize() for s in config_stopwords)
+    # Add question words and others that might start a sentence
+    stopwords.update({"When", "Where", "Who", "What", "Why", "How", "There", "Here"})
     
-    return claim  # Fallback: use the whole claim if no capitalized entity found
+    filtered_candidates = []
+    for c in candidates:
+        # If the candidate matches a stopword exactly, skip it
+        # But if it's "The Beatles", "The" is part of the phrase, so regex handles it?
+        # Our regex `\b[A-Z][\w-]*(?:\s+[A-Z][\w-]*)*\b` grabs "The Beatles" as one group.
+        # So checking `if c in stopwords` is safe for "The" vs "The Beatles".
+        if c in stopwords:
+            continue
+        filtered_candidates.append(c)
+        
+    # If we filtered everything (e.g. claim is just "The"), revert to all candidates
+    final_candidates = filtered_candidates if filtered_candidates else candidates
+    
+    # 3. Pick the longest candidate by character length
+    # This favors "George Orwell" (13) over "The" (3) or "Novel" (5) if customized
+    best_entity = max(final_candidates, key=len)
+    
+    return best_entity
 
 def split_text_into_sentences(text: str) -> List[str]:
     """
@@ -67,11 +94,23 @@ def get_claim_keywords(claim: str) -> List[str]:
     keywords = [w.lower() for w in words if w.lower() not in stopwords and len(w) > min_len]
     return keywords
 
+def simple_stem(word: str) -> str:
+    """
+    Rudimentary stemmer to handle pluralization and common suffixes.
+    """
+    word = word.lower()
+    suffixes = ["ation", "tion", "sion", "ment", "ing", "ed", "es", "al", "ly", "y", "s"]
+    for suffix in suffixes:
+        if word.endswith(suffix) and len(word) > len(suffix) + 2:
+            return word[:-len(suffix)]
+    return word
+
 def calculate_relevance_score(sentence: str, keywords: List[str], entity: str) -> int:
     """
     Calculates a relevance score for a sentence based on keyword overlap.
     """
     s_lower = sentence.lower()
+    s_words = set(re.findall(r'\w+', s_lower))
     score = 0
     
     # Get weights from config
@@ -81,11 +120,31 @@ def calculate_relevance_score(sentence: str, keywords: List[str], entity: str) -
     # Check entity (strict string match)
     if entity and entity.lower() in s_lower:
         score += entity_score
+    elif entity:
+        # Partial entity match (e.g. "Newton" in "Isaac Newton")
+        parts = entity.split()
+        if len(parts) > 1:
+            surname = parts[-1].lower()
+            if surname in s_words:
+                score += (entity_score * 0.5)
         
-    # Check keywords
+    # Check keywords with stemming and fuzzy matching
+    matched_keywords = set()
     for k in keywords:
+        k_stem = simple_stem(k)
+        
+        # 1. Exact/Substring match
         if k in s_lower:
-            score += keyword_score
+            matched_keywords.add(k)
+            continue
+            
+        # 2. Stem match against words
+        for w in s_words:
+            if simple_stem(w) == k_stem:
+                matched_keywords.add(k)
+                break
+    
+    score += len(matched_keywords) * keyword_score
             
     return score
 
@@ -118,7 +177,9 @@ def retrieve_evidence(claims: List[str]) -> List[Dict]:
             else:
                 page_title = search_results[0]
                 try:
-                    page = wikipedia.page(page_title, auto_suggest=True)
+                    # We use auto_suggest=False because search() already gives us the best match title.
+                    # Enabling it can cause weird redirects (e.g. 'Australia' -> 'List of...').
+                    page = wikipedia.page(page_title, auto_suggest=False)
                     
                     if "en.wikipedia.org" in page.url:
                         # Process Content

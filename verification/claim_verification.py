@@ -50,6 +50,7 @@ def verify_claims(claim_evidence_pairs: List[Dict]) -> List[Dict]:
         return results
 
     keyword_min_len = retrieval_config.get("keyword_min_length", 3)
+    stopwords = set(retrieval_config.get("stopwords", []))
     overlap_threshold = verification_config.get("keyword_overlap_threshold", 0.7)
     supportive_conf = verification_config.get("supportive_entailment_confidence", 0.9)
 
@@ -72,10 +73,22 @@ def verify_claims(claim_evidence_pairs: List[Dict]) -> List[Dict]:
                 # Premise = Evidence, Hypothesis = Claim
                 label, confidence = nli_model.predict(premise=ev_text, hypothesis=claim_text)
                 
+                # Check for bidirectional contradiction to filter false positives
+                if label == "CONTRADICTION":
+                     rev_label, _ = nli_model.predict(premise=claim_text, hypothesis=ev_text)
+                     if rev_label != "CONTRADICTION":
+                         logger.info(f"Downgrading CONTRADICTION to NEUTRAL due to asymmetry: {claim_text} vs {ev_text[:30]}...")
+                         label = "NEUTRAL"
+                         # Confidence could be adjusted or kept. Keeping original confidence might be misleading if we changed label.
+                         # Let's lower it or just set it to the reverse confidence? 
+                         # Actually, if we set it to NEUTRAL, it will fall into the overlap check below.
+                         # Let's accept the NEUTRAL label.
+                
                 # FIX 2: Supportive entailment override
                 if label == "NEUTRAL":
                     # Check overlap: if significant claim keywords are in evidence
-                    folder_keywords = [w.lower() for w in re.findall(r'\w+', claim_text) if len(w) > keyword_min_len]
+                    folder_keywords = [w.lower() for w in re.findall(r'\w+', claim_text) 
+                                       if len(w) > keyword_min_len and w.lower() not in stopwords]
                     if folder_keywords:
                         found_count = sum(1 for k in folder_keywords if k in ev_text.lower())
                         if (found_count / len(folder_keywords)) >= overlap_threshold:
