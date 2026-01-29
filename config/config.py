@@ -12,7 +12,7 @@ CONFIG = {
         "nli_model_name": "roberta-large-mnli"
     },
     "paths": {
-        "input_data_path": "phase1_llm_outputs.csv",
+        "input_data_path": "llm_outputs.csv",
         "pipeline_output_path": "final_pipeline_output.csv"
     },
     "retrieval": {
